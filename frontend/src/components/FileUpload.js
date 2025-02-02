@@ -19,13 +19,9 @@ const FileUpload = ({ onTranscriptionReceived }) => {
         formData.append('audioFile', selectedFile);
 
         try {
-            setUploadStatus('Uploading...');
+            setUploadStatus('Uploading & Transcribing...');
             const uploadResponse = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/upload`, formData);
-            const { filePath } = uploadResponse.data;
-
-            setUploadStatus('File uploaded! Transcribing...');
-            const transcriptionResponse = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/transcribe`, { filePath });
-            onTranscriptionReceived(transcriptionResponse.data.transcript);
+            onTranscriptionReceived(uploadResponse.data.transcript);
             setUploadStatus('Transcription completed!');
         } catch (error) {
             console.error(error);
